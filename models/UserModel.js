@@ -5,7 +5,7 @@
  * @Description: user表模型
  * @youWant: add you want info here
  * @Date: 2019-03-08 17:46:29
- * @LastEditTime: 2019-03-11 17:58:11
+ * @LastEditTime: 2019-03-12 13:43:47
  */
 const dbUtils = require('../sql')
 const ReturnMessage = require('../utils/message')
@@ -30,8 +30,10 @@ module.exports = class UserModel {
     return result
   }
 
-  
-  async getUserList () {
+  /**
+   * 根据条件查询用户
+   */
+  async getUserList (param) {
     let result 
   }
 }
