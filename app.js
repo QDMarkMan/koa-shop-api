@@ -5,7 +5,6 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const initLoggerMiddleWare = require('./middleware/LoggerMiddle')
-console.log(initLoggerMiddleWare)
 // 数据路连接测试
 const {connectTest} =  require('./sql')
 connectTest()

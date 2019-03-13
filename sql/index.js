@@ -5,7 +5,7 @@
  * @Description: 数据库链接/帮助 文件
  * @youWant: add you want info here
  * @Date: 2019-03-11 14:48:06
- * @LastEditTime: 2019-03-11 15:57:43
+ * @LastEditTime: 2019-03-13 15:49:07
  */
 const MySQL = require('mysql')
 const chalk = require('chalk')
@@ -93,6 +93,15 @@ const findTableDataById = (table, id) => {
   return query(sql, [table, id])
 }
 /**
+ * 根据表中的name 属性值查询数据
+ * @param {*} table 
+ * @param {*} id 
+ */
+const findDataByName = (table, name, value) => {
+  let sql = `SELECT * FROM ?? WHERE ${name} = ? limit 1`
+  return query(sql, [table, value])
+}
+/**
  * 插入数据
  * @param {*} table 
  * @param {*} values 
@@ -155,6 +164,7 @@ module.exports = {
   findAll,
   createTable,
   findTableDataById,
+  findDataByName,
   insertData,
   updateData,
   updateUser,

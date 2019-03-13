@@ -5,7 +5,7 @@
  * @Description: log4js utils
  * @youWant: add you want info here
  * @Date: 2019-03-12 17:04:11
- * @LastEditTime: 2019-03-12 17:31:03
+ * @LastEditTime: 2019-03-13 15:23:57
  */
 // 在应用程序中首次 require('log4js') 之后，应该立即进行配置。如果不调用 configure，log4js 将使用 LOG4JS_CONFIG （如果已定义）或默认配置。默认的配置定义了一个 appender，使用带颜色的布局将日志记录到 stdout，但也定义了默认日志级别是关闭的（即不会输出日志）。
 const Log4js = require('log4js')
@@ -19,7 +19,7 @@ const resLog = Log4js.getLogger('response')
 // 格式化日志信息
 class LoggerFormat {
   /**
-   * error
+   * 请求error
    * @param {*} ctx 
    * @param {*} error 
    * @param {*} time 
@@ -88,7 +88,7 @@ class LoggerUtil {
     }
   }
   /**
-   * 错误log
+   * 请求错误log
    * @param {*} ctx 
    * @param {*} error 
    * @param {*} resTime 
@@ -96,6 +96,15 @@ class LoggerUtil {
   static logError (ctx, error, resTime) {
     if (ctx && error) {
       errLog.error(LoggerFormat.error(ctx, error, resTime));
+    }
+  }
+  /**
+   * 输出简单错误
+   * @param {*} error 
+   */
+  static error (error) {
+    if (error) {
+      errLog.error(error)
     }
   }
   /**
