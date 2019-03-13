@@ -11,9 +11,6 @@ soketport: 3002
 ########web端口
 webport: 3000
 
-#######最后一次上线日期 yyyy/MM/dd
-#lastDeployDate:
-
 #######Session Key
 session_key: session_id
 #######Session Secret
@@ -26,7 +23,8 @@ sessionTimeout: 30 * 60 * 1000
 #OSS Secret
 #######OSS配置 End
 #########Momgo配置 Start
-#测试mongo地址
+#########数据库配置 Start
+#DB config
 DB:
   host: 'localhost' # 这也是注释，不会输出的
   port: 3306
@@ -35,29 +33,16 @@ DB:
   password: '123456'
 #正式mongo地址
 #DB_CONN_STR: 'mongodb://localhost:27017/BookPlatform'
-#########Momgo配置 End
-#######Redis配置 Start
-#redis_cluster:
-#   [{
-#     host: '172.16.100.101',
-#     port: '16100'
-#   },{
-#     host: '172.16.100.102',
-#     port: '16100'
-#   },{
-#     host: '172.16.100.103',
-#     port: '16100'
-#   }]
-#######Redis配置 End
+#########数据库配置配置 End
 
-#######后端参数 Start
-#后端Rest链接地址 以HTTP开头
+#######Http参数 Start
+#Rest链接地址 以HTTP开头
 
-#######后端参数 End
+#######Http参数 End
 
 #demokey:1
 
-###地址的配置
+### Http通信地址的配置
 #serverPath: "http://172.16.100.116:30062/"
 
 #######请求参数配置
