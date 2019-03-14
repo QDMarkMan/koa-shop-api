@@ -15,7 +15,7 @@ router.post('/register', async (ctx, next) => {
   para.ip = ctx.ip
   // 验证器对象
   const _validatorObj = validatorRegisterData(para)
-  try {
+  /* try {
     // =======> 数据验证  <========
     if (!_validatorObj.isValid) {
       result = returnMessage.setErrorResult(_validatorObj.errCode, _validatorObj.errMsg, null)
@@ -25,9 +25,22 @@ router.post('/register', async (ctx, next) => {
     }
   } catch (error) {
     result = returnMessage.set500Result()
+  } */
+  // =======> 数据验证  <========
+  if (!_validatorObj.isValid) {
+    result = returnMessage.setErrorResult(_validatorObj.errCode, _validatorObj.errMsg, null)
+  } else {
+    // 数据校验完成 交给service处理
+    result = await userService.createUser(para)
   }
   // 返回结果
   ctx.body = result
+})
+
+// 
+router.post('/error', async (ctx, next) => {
+  ctx.throw(400,'bad request')
+  await next()
 })
 
 module.exports = router
