@@ -15,10 +15,10 @@ connectTest()
 const router = require('./routes/index')
 // error handler
 onerror(app)
-// 监听app error并打印日志
-app.on('error', ctxErrorHandle)
 // middlewares
 // 由于独特的洋葱模型 我们首先要进行使用的就是错误处理中间件
+// 监听app error并打印日志
+app.use(ctxErrorHandle)
 app.use(bodyparser({
   enableTypes:['json', 'form', 'text']
 }))
@@ -35,7 +35,6 @@ initLoggerMiddleWare(app)
 // =======> 路由注册中间件  <========
 app.use(router.routes(), router.allowedMethods())
 // =======> passport中间件拦截  <========
-app.use(sessionPassport())
-
+app.use(sessionPassport)
 
 module.exports = app

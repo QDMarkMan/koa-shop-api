@@ -5,7 +5,7 @@
  * @Description: 用户数据service层
  * @youWant: add you want info here
  * @Date: 2019-03-11 14:29:06
- * @LastEditTime: 2019-03-13 16:34:28
+ * @LastEditTime: 2019-03-15 16:45:28
  */
 const UserModel = require('../models/UserModel')
 const UuidService = require('./UuidService')
@@ -76,5 +76,22 @@ module.exports = class UserService extends CommonService {
       result =  returnMessage.set500Result()
     }
     return result
+  }
+  /**
+   * 登陆
+   * @param {*} user 
+   */
+  async loginByUserName (user) {
+    let result = {}
+    try {
+      const phoneExit = await this._isUserAlreadyExistByOptions('phone', userEntity.phone)
+      // 判断是否有用户
+      if (phoneExit) {
+        return returnMessage.setResult(101, '当前手机号注册用户已存在', null)
+      }
+    } catch (error) {
+      logger.error(`ServiceError: error in UserService createUser, ${error}`)
+      result =  returnMessage.set500Result()
+    }
   }
 }

@@ -5,7 +5,7 @@
  * @Description: Session 令牌拦截,主要是拦截请求是存在session
  * @youWant: add you want info here
  * @Date: 2019-03-14 14:57:19
- * @LastEditTime: 2019-03-14 16:08:43
+ * @LastEditTime: 2019-03-15 16:26:18
  */
 const config =  require('../config')
 /**
@@ -13,8 +13,7 @@ const config =  require('../config')
  * @param {*} ctx 
  * @param {*} next 
  */
-const sessionPassport = (ctx, next) => {
-  return async function (ctx, next) {
+const sessionPassport = async (ctx, next) => {
     await next()
     /* const session = ctx.session // 请求中的session
     const url = ctx.request.originalUrl // 请求url
@@ -39,6 +38,5 @@ const sessionPassport = (ctx, next) => {
     } catch (error) {
       console.log(error)
     } */
-  }
 }
 module.exports = sessionPassport

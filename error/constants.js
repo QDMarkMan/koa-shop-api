@@ -2,14 +2,13 @@
  * @Author: etongfu
  * @Email: 13583254085@163.com
  * @LastEditors: etongfu
- * @Description: http code 常量
+ * @Description: Error code 常量
  * @youWant: add you want info here
  * @Date: 2019-03-14 17:39:42
- * @LastEditTime: 2019-03-14 17:59:55
+ * @LastEditTime: 2019-03-15 16:56:42
  */
 //错误message
-const errMsg = Object.freeze({
-  0: 'ok',
+module.exports.ERROR_MSG = Object.freeze({
   400: 'invalid param',
   401: 'unauthorized',
   403: 'forbidden',
@@ -18,8 +17,8 @@ const errMsg = Object.freeze({
   503: 'service busy',
   1001: 'some custom error msg'
 })
-
-module.exports = Object.freeze({
+// 错误常量
+module.exports.CONSTANTS = Object.freeze({
   // http级别的错误
   HTTP_CODE: {
     BAD_REQUEST: 400,               // BAD_REQUEST 参数错误

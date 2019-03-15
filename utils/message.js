@@ -5,10 +5,14 @@
  * @Description: 返回数据工构造器
  * @youWant: add you want info here
  * @Date: 2019-03-11 17:11:53
- * @LastEditTime: 2019-03-12 16:33:29
+ * @LastEditTime: 2019-03-15 16:46:31
  */
-
+const {ERROR_MSG,  CONSTANTS} = require('../error/constants')
 module.exports = class ReturnMessage  {
+  constructor () {
+    this.ERROR_MSG  = ERROR_MSG
+    this.CONSTANTS = CONSTANTS
+  }
   /**
    * 设置验证未通过的返回数据
    * @param {*Array} errorMaps 
@@ -17,9 +21,9 @@ module.exports = class ReturnMessage  {
   static setValidatorResult (errors = []) {
     return {
       // 多重条件验证如果有多个没有通过的话选取第一个作为展示信息
-      errMsg: errors.length > 0 ? errors[0].msg : '',
-      //　状态吗
-      errCode: errors.length > 0 ? errors[0].code : '',
+      errMsg: errors.length > 0 ? errors[0] : '',
+      //　状态吗: 锁定参数错误
+      errCode: CONSTANTS.HTTP_CODE.BAD_REQUEST,
       // 是否验证通过
       isValid: errors.length > 0 ? false : true
     }
