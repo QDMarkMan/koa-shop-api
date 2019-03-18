@@ -5,17 +5,17 @@
  * @Description: 加密服务
  * @youWant: add you want info here
  * @Date: 2019-03-13 16:15:21
- * @LastEditTime: 2019-03-13 16:18:31
+ * @LastEditTime: 2019-03-18 16:51:14
  */
 const crypto = require('crypto');
 const Util = require('../utils/util')
 /**
- * 以防不支持
+ * 加密服务
  */
 class SecretService {
   
   constructor () {
-    this.SECRET_KEY = 'project_management' // 加密解密key
+    this.SECRET_KEY = 'KOA_PEOJECT' // 加密解密key
   }
   /**
    * 生成密码 ==> 不可逆操作
@@ -24,7 +24,6 @@ class SecretService {
    */
   static generatePassportKey(password) {
     let encoded
-    console.log(Util.judgeObjType(password))
     if (Util.judgeObjType(password) !== 'String' || password === '') {
       encoded = ''
     } else {

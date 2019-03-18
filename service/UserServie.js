@@ -5,7 +5,7 @@
  * @Description: 用户数据service层
  * @youWant: add you want info here
  * @Date: 2019-03-11 14:29:06
- * @LastEditTime: 2019-03-15 16:45:28
+ * @LastEditTime: 2019-03-18 17:02:43
  */
 const UserModel = require('../models/UserModel')
 const UuidService = require('./UuidService')
@@ -28,14 +28,13 @@ module.exports = class UserService extends CommonService {
    * @param {*} optionName 选项名称
    * @param {*} optionValue  选项值
    */
-  async _isUserAlreadyExistByOptions (optionName, optionValue) {
+  async _getExistUserByOptions (optionName, optionValue) {
     let result = false
     try {
-      let res = await userModel.findOneUserByOption(optionName, optionValue)
-      result = res.length > 0 ? true : false
+      result = await userModel.findOneUserByOption(optionName, optionValue)
     } catch (error) {
       logger.error(`ServiceError: error in UserService _isUserAlreadyExistByPhone, ${error}`)
-      result = false
+      result = []
     }
     return result
   }
@@ -47,14 +46,14 @@ module.exports = class UserService extends CommonService {
     let result = {}
     try {
         // =======> 用户添加前的查询  <========
-        const phoneExit = await this._isUserAlreadyExistByOptions('phone', userEntity.phone)
+        const phoneExit = await this._getExistUserByOptions('phone', userEntity.phone)
         // 首先判断手机号是否已经占用
-        if (phoneExit) {
+        if (phoneExit.length > 0) {
           return returnMessage.setResult(105, '当前手机号注册用户已存在', null)
         }
         // 判断用户名是否已经被使用了
-        const usernameExit = await this._isUserAlreadyExistByOptions('username', userEntity.username)
-        if (usernameExit) {
+        const usernameExit = await this._getExistUserByOptions('username', userEntity.username)
+        if (usernameExit.length > 0) {
           return returnMessage.setResult(106, '当前用户名注册用户已存在', null)
         }
         // =======> 新增用户  <========
@@ -78,20 +77,31 @@ module.exports = class UserService extends CommonService {
     return result
   }
   /**
-   * 登陆
+   * 登陆服务
    * @param {*} user 
    */
   async loginByUserName (user) {
     let result = {}
     try {
-      const phoneExit = await this._isUserAlreadyExistByOptions('phone', userEntity.phone)
+      const _user = await this._getExistUserByOptions('username', user.username)
       // 判断是否有用户
-      if (phoneExit) {
-        return returnMessage.setResult(101, '当前手机号注册用户已存在', null)
+      if (_user.length === 0) {
+        return returnMessage.setResult(101, '查询无当前用户', null)
+      } 
+      // 驼峰转化
+      const _userEntity = undelineToCamel(_user[0])
+      // 密码对比
+      const _tempPassword = SecretService.generatePassportKey(user.password)
+      if (_userEntity.password === _tempPassword) {
+        // 登陆成功
+        result = returnMessage.setSuccessResult("登陆成功", _userEntity)
+      } else {
+        result = returnMessage.setErrorResult(102, "用户名或密码错误", null)
       }
     } catch (error) {
       logger.error(`ServiceError: error in UserService createUser, ${error}`)
       result =  returnMessage.set500Result()
     }
+    return result
   }
 }
