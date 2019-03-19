@@ -5,7 +5,7 @@
  * @Description: 通用service
  * @youWant: add you want info here
  * @Date: 2019-03-12 13:46:43
- * @LastEditTime: 2019-03-18 17:12:31
+ * @LastEditTime: 2019-03-19 13:50:35
  */
 const SessionModel = require('../models/SessionModel')
 const logger = require('../utils/logger')
@@ -19,7 +19,7 @@ module.exports = class CommonService {
    * 通过session的内容获取session的值
    * @param {* {data：data}} } para 
    */
-  async getSessionIdBySession (para) {
+  async _getSessionIdBySession (para) {
     const data = JSON.stringify(para.data)
     let result
     try {
@@ -28,7 +28,6 @@ module.exports = class CommonService {
       logger.error(`ServiceError: error in CommonService getSessionIdBySession, ${error}`)
       result = []
     }
-    console.log(result)
     return result
   }
 }

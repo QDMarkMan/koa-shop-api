@@ -5,7 +5,7 @@
  * @Description: 返回数据工构造器
  * @youWant: add you want info here
  * @Date: 2019-03-11 17:11:53
- * @LastEditTime: 2019-03-15 16:46:31
+ * @LastEditTime: 2019-03-19 13:55:58
  */
 const {ERROR_MSG,  CONSTANTS} = require('../error/constants')
 module.exports = class ReturnMessage  {
@@ -42,7 +42,6 @@ module.exports = class ReturnMessage  {
       result,success
     }
   }
-
   /**
    * 操作错误的返回信息
    * @param {*} code 

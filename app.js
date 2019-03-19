@@ -8,6 +8,7 @@ const ctxErrorHandle = require('./middleware/Error')
 const initLoggerMiddleWare = require('./middleware/LoggerMiddle')
 const initSessionStore = require('./middleware/SessionInit')
 const sessionPassport = require('./middleware/Passport')
+const CORSMiddleware = require('./middleware/CORS')
 // 数据路连接测试
 const {connectTest} =  require('./sql')
 connectTest()
@@ -19,6 +20,9 @@ onerror(app)
 // 由于独特的洋葱模型 我们首先要进行使用的就是错误处理中间件
 // 监听app error并打印日志
 app.use(ctxErrorHandle)
+// =======> 允许跨域访问中间件  <========
+app.use(CORSMiddleware())
+
 app.use(bodyparser({
   enableTypes:['json', 'form', 'text']
 }))

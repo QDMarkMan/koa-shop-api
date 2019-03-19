@@ -5,7 +5,7 @@
  * @Description: 数据库链接/帮助 文件
  * @youWant: add you want info here
  * @Date: 2019-03-11 14:48:06
- * @LastEditTime: 2019-03-13 15:49:07
+ * @LastEditTime: 2019-03-19 14:51:55
  */
 const MySQL = require('mysql')
 const chalk = require('chalk')
@@ -121,16 +121,6 @@ const updateData = (table, values, id) => {
   return query(sql, [table, values, id])
 }
 /**
- * 更新用户
- * @param {*} table 
- * @param {*} values 
- * @param {*} id 
- */
-const updateUser = (table, values, id) => {
-  let sql = `UPDATE ?? SET ? WHERE userId = ?`
-  return query(sql, [table, values, id])
-}
-/**
  * 删除指定表中某一个数据
  * @param {*} table 
  * @param {*} keyValue 
@@ -167,7 +157,6 @@ module.exports = {
   findDataByName,
   insertData,
   updateData,
-  updateUser,
   deleteDataById,
   select,
   count

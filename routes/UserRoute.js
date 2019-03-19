@@ -32,6 +32,7 @@ router.post('/register', async (ctx, next) => {
 router.post('/login', async (ctx, next) => {
   let result
   let para = ctx.request.body
+  console.log(para)
   const _validatorObj = userParamValidator.validatorLoginData(para)
   if (!_validatorObj.isValid) {
     result = returnMessage.setErrorResult(_validatorObj.errCode, _validatorObj.errMsg, null)
@@ -45,17 +46,25 @@ router.post('/login', async (ctx, next) => {
       // 设置存储
       ctx.session = _session
       // 根据session内容查询sessionId
-      const _sessionId = await userService.getSessionIdBySession({data: _session})
-
+      const _returnSession = await userService.getLoginedSessionId({data: _session})
       // 获取sessionId之后返回给http请求
       result.result = {
-        sessionId: await ctx.get(config.session_key) // sessionId
+        sessionId: _returnSession.success ? _returnSession.result.sessionId : ""// sessionId
       }
     }
   }
   // 返回结果
   ctx.body = result
   next()
+})
+
+// 获取用户信息
+router.post('/getUserInfo', async (ctx, next) => {
+  next()
+  let result = {}
+  const id = ctx.session.id
+  result = await userService.getUserInfoByUserId(id)
+  ctx.body = result
 })
 
 // demo

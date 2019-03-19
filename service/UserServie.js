@@ -5,7 +5,7 @@
  * @Description: 用户数据service层
  * @youWant: add you want info here
  * @Date: 2019-03-11 14:29:06
- * @LastEditTime: 2019-03-18 17:02:43
+ * @LastEditTime: 2019-03-19 14:55:33
  */
 const UserModel = require('../models/UserModel')
 const UuidService = require('./UuidService')
@@ -100,6 +100,44 @@ module.exports = class UserService extends CommonService {
       }
     } catch (error) {
       logger.error(`ServiceError: error in UserService createUser, ${error}`)
+      result =  returnMessage.set500Result()
+    }
+    return result
+  }
+  /**
+   * 获取用户登陆之后的sessionId
+   * @param {*} param 
+   */
+  async getLoginedSessionId (param) {
+    let result = {}
+    try {
+      const _session =await this._getSessionIdBySession(param)
+      if (_session.length > 0) {
+        result = returnMessage.setSuccessResult("获取sessionId成功", {sessionId: _session[0].id})
+      } else {
+        result = returnMessage.setErrorResult(401, "未查询到session", null)
+      }
+    } catch (error) {
+      logger.error(`ServiceError: error in UserService createUser, ${error}`)
+      result =  returnMessage.set500Result()
+    }
+    return result
+  }
+  /**
+   * 根据用户id获取用户信息
+   * @param {*} userId 
+   * @returns {*returnMessage}
+   */
+  async getUserInfoByUserId (userId) {
+    let result = {}
+    try {
+      let _user = await userModel.findOneUserByOption('id', userId)
+      if (_user == null || _user.length == 0) {
+        return result = returnMessage.setErrorResult(101, "查询失败")
+      } 
+      result = returnMessage.setSuccessResult("获取用户成功", undelineToCamel(_user[0]))
+    } catch (error) {
+      logger.error(`ServiceError: error in UserService getUserInfoByUserId, ${error}`)
       result =  returnMessage.set500Result()
     }
     return result
