@@ -5,7 +5,7 @@
  * @Description: 用户数据service层
  * @youWant: add you want info here
  * @Date: 2019-03-11 14:29:06
- * @LastEditTime: 2019-03-19 14:55:33
+ * @LastEditTime: 2019-03-20 15:39:09
  */
 const UserModel = require('../models/UserModel')
 const UuidService = require('./UuidService')
@@ -57,8 +57,9 @@ module.exports = class UserService extends CommonService {
           return returnMessage.setResult(106, '当前用户名注册用户已存在', null)
         }
         // =======> 新增用户  <========
+        // 创建id
         const id = await uuidService.generateUuId()
-        //参数处理
+        // 参数处理
         userEntity.id = id // 加上id
         userEntity.gender = userEntity.gender === '' ? '0' : '1' // 默认为男性
         userEntity.regDate = new Date().getTime() // 加上创建时间
@@ -138,6 +139,49 @@ module.exports = class UserService extends CommonService {
       result = returnMessage.setSuccessResult("获取用户成功", undelineToCamel(_user[0]))
     } catch (error) {
       logger.error(`ServiceError: error in UserService getUserInfoByUserId, ${error}`)
+      result =  returnMessage.set500Result()
+    }
+    return result
+  }
+  /**
+   * @requires all users
+   */
+  async getUserList () {
+    let result
+    try {
+      let _res = await userModel.getAllUsers()
+      if(_res == null || _res.length === 0) {
+        return result = returnMessage.setErrorResult(returnMessage.CONSTANTS.CUSTOM_CODE.EMPTY_RESULT, "查询无数据", null)
+      }
+      //拾取数组
+      const _temp = _res.map(el => {
+        let {id, username, nickName, email, phone, ip, address, gender} = undelineToCamel(el)
+        return {id, username, nickName, email, phone, ip, address, gender}
+      })
+      result = returnMessage.setSuccessResult("获取用户列表成功", _temp)
+    } catch (error) {
+      logger.error(`ServiceError: error in UserService getUserList, ${error}`)
+      result =  returnMessage.set500Result()
+    }
+    return result
+  }
+  /**
+   * 更新用户信息
+   * @param {*} id 
+   * @param {*} info 
+   */
+  async updateUserInfo (info) {
+    let result 
+    try {
+      const id = info.id
+      delete info.id
+      let res = await userModel.updateUser(id, camelToUndeline(info))
+      if (!res) {
+        return returnMessage.setErrorResult(returnMessage.CONSTANTS.CUSTOM_CODE.OPERATE_ERROR, "编辑用户失败", null)
+      }
+      result = returnMessage.setSuccessResult("编辑成功", null)
+    } catch (error) {
+      logger.error(`ServiceError: error in UserService updateUserInfo, ${error}`)
       result =  returnMessage.set500Result()
     }
     return result

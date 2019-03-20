@@ -5,7 +5,7 @@
  * @Description: 工具类
  * @youWant: add you want info here
  * @Date: 2019-03-13 14:14:47
- * @LastEditTime: 2019-03-13 14:22:31
+ * @LastEditTime: 2019-03-20 15:44:09
  */
 class Util {
   /**
@@ -67,6 +67,22 @@ class Util {
       newStr += list[i].slice(0,1).toUpperCase() + list[i].slice(1)
     }
     return newStr
+  }
+  /**
+   * 把对象转化为sql语句字符串
+   * @param {*JSON Object} obj 
+   * @returns {*String} ==> username="xxx",password="123456"
+   */
+  static changeObjToSqlStr (obj) {
+    let _values = ''
+    if (!obj || this.judgeObjType(obj) !== 'Object') return ''
+    // 序列表对象
+    _values = Object.keys(obj).reduce((pre, cur, index) => {
+      let divider = index === 0 ? '' : ','
+      return pre + `${divider}${cur}="${obj[cur]}"`
+    }, _values)
+    console.log(_values)
+    return _values
   }
 }
 module.exports = Util

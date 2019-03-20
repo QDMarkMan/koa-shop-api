@@ -5,7 +5,7 @@
  * @Description: 数据验证方法
  * @youWant: add you want info here
  * @Date: 2019-03-12 15:42:06
- * @LastEditTime: 2019-03-15 17:14:42
+ * @LastEditTime: 2019-03-20 15:30:04
  */
 const Validator = require('validator')
 const ReturnMessage = require('../utils/message')

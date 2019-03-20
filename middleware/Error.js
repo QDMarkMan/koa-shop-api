@@ -5,7 +5,7 @@
  * @Description: 错误处理
  * @youWant: add you want info here
  * @Date: 2019-03-14 15:58:42
- * @LastEditTime: 2019-03-15 16:49:58
+ * @LastEditTime: 2019-03-20 16:22:37
  */
 const {CustomError, HttpError} = require('../error')
 const LoggerUtil = require ('../utils/logger')
@@ -21,7 +21,7 @@ const ctxErrorHandle  = (ctx, next) => {
         // 默认错误
         let code = 500
         let msg = 'unknown error'
-        // 使用  throw new CustomError() 或者 throw new HttpError() 抛出的异常
+        // 使用 throw new CustomError() 或者 throw new HttpError() 抛出的异常
         if (error instanceof CustomError || error instanceof HttpError) {
           const res = error.getCodeMsg()
           ctx.status = error instanceof HttpError ? res.code : 200

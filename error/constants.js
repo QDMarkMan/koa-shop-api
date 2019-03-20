@@ -5,10 +5,11 @@
  * @Description: Error code 常量
  * @youWant: add you want info here
  * @Date: 2019-03-14 17:39:42
- * @LastEditTime: 2019-03-15 16:56:42
+ * @LastEditTime: 2019-03-20 15:13:18
  */
 //错误message
 module.exports.ERROR_MSG = Object.freeze({
+  [-1]: "查询无数据",
   400: 'invalid param',
   401: 'unauthorized',
   403: 'forbidden',
@@ -30,6 +31,9 @@ module.exports.CONSTANTS = Object.freeze({
   },
   // 可以理解为service 错误
   CUSTOM_CODE: {
-    SOME_CUSTOM_ERROR: 1001
+    EMPTY_RESULT: -1,               // 查询无数据
+    SESSION_FAILURE: -2,            // session超时
+    OPERATE_ERROR: -3,              // 操作失败
+    SOME_CUSTOM_ERROR: 1001         // catch到error       
   }
 })

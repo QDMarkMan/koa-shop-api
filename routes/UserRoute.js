@@ -1,6 +1,5 @@
 const router = require('koa-router')()
 const userParamValidator = require('../validators/UserValidator')
-const config = require('../config')
 const UserService = require('../service/UserServie')
 const ReturnMessage = require('../utils/message')
 // 返回数据拼接处理
@@ -32,7 +31,6 @@ router.post('/register', async (ctx, next) => {
 router.post('/login', async (ctx, next) => {
   let result
   let para = ctx.request.body
-  console.log(para)
   const _validatorObj = userParamValidator.validatorLoginData(para)
   if (!_validatorObj.isValid) {
     result = returnMessage.setErrorResult(_validatorObj.errCode, _validatorObj.errMsg, null)
@@ -64,6 +62,28 @@ router.post('/getUserInfo', async (ctx, next) => {
   let result = {}
   const id = ctx.session.id
   result = await userService.getUserInfoByUserId(id)
+  ctx.body = result
+})
+
+
+// 获取用户信息
+router.post('/getUsers', async (ctx, next) => {
+  next()
+  let result = {}
+  result = await userService.getUserList()
+  ctx.body = result
+})
+
+// 更新用户
+router.post('/editUser', async (ctx, next) => {
+  next()
+  let para = ctx.request.body
+  let result = {}
+  if (!para.id) {
+    // 通过ctx抛出简单的参数错误
+     return ctx.throw(400,'请输入用户id')
+  }
+  result = await userService.updateUserInfo(para)
   ctx.body = result
 })
 
