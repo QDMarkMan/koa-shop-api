@@ -5,7 +5,7 @@
  * @Description: 用户数据service层
  * @youWant: add you want info here
  * @Date: 2019-03-11 14:29:06
- * @LastEditTime: 2019-03-20 15:39:09
+ * @LastEditTime: 2019-03-26 14:49:05
  */
 const UserModel = require('../models/UserModel')
 const UuidService = require('./UuidService')
@@ -113,6 +113,7 @@ module.exports = class UserService extends CommonService {
     let result = {}
     try {
       const _session =await this._getSessionIdBySession(param)
+      // issue: 2019年3月25日 未判断session是否超时
       if (_session.length > 0) {
         result = returnMessage.setSuccessResult("获取sessionId成功", {sessionId: _session[0].id})
       } else {
@@ -132,6 +133,7 @@ module.exports = class UserService extends CommonService {
   async getUserInfoByUserId (userId) {
     let result = {}
     try {
+      logger.console(`获取${userId}用户数据`)
       let _user = await userModel.findOneUserByOption('id', userId)
       if (_user == null || _user.length == 0) {
         return result = returnMessage.setErrorResult(101, "查询失败")
@@ -149,6 +151,8 @@ module.exports = class UserService extends CommonService {
   async getUserList () {
     let result
     try {
+      logger.console("获取全部用户数据")
+      // issue: 进行逻辑删除的判断
       let _res = await userModel.getAllUsers()
       if(_res == null || _res.length === 0) {
         return result = returnMessage.setErrorResult(returnMessage.CONSTANTS.CUSTOM_CODE.EMPTY_RESULT, "查询无数据", null)
@@ -182,6 +186,25 @@ module.exports = class UserService extends CommonService {
       result = returnMessage.setSuccessResult("编辑成功", null)
     } catch (error) {
       logger.error(`ServiceError: error in UserService updateUserInfo, ${error}`)
+      result =  returnMessage.set500Result()
+    }
+    return result
+  }
+  /**
+   * 用户退出登录
+   * @param {*} userId 
+   */
+  async logoutByUserId (_sessionId) {
+    let result 
+    try {
+      let res = await this._deleteSessionById(_sessionId)
+      logger.console("用户退出登录返回数据")
+      if (!res) {
+        return returnMessage.setErrorResult(returnMessage.CONSTANTS.CUSTOM_CODE.OPERATE_ERROR, "退出登录失败", null)
+      }
+      result = returnMessage.setSuccessResult("退出登陆成功", null)
+    } catch (error) {
+      logger.error(`ServiceError: error in UserService logoutByUserId, ${error}`)
       result =  returnMessage.set500Result()
     }
     return result

@@ -5,7 +5,7 @@
  * @Description: 数据库链接/帮助 文件
  * @youWant: add you want info here
  * @Date: 2019-03-11 14:48:06
- * @LastEditTime: 2019-03-20 15:33:59
+ * @LastEditTime: 2019-03-26 16:59:10
  */
 const MySQL = require('mysql')
 const chalk = require('chalk')
@@ -97,6 +97,15 @@ const findTableDataById = (table, id) => {
  * @param {*} table 
  * @param {*} id 
  */
+const findDatasByName = (table, name, value) => {
+  let sql = `SELECT * FROM ?? WHERE ${name} = ?`
+  return query(sql, [table, value])
+}
+/**
+ * 根据表中的name 属性值查询数据
+ * @param {*} table 
+ * @param {*} id 
+ */
 const findDataByName = (table, name, value) => {
   let sql = `SELECT * FROM ?? WHERE ${name} = ? limit 1`
   return query(sql, [table, value])
@@ -132,12 +141,21 @@ const updateValuesById = (table, values, id) => {
   return query(sql, [table, id])
 }
 /**
+ * 根据id删除指定表中某一个数据
+ * @param {*} table 
+ * @param {*} id 
+ */
+const deleteDataById = (table, id) => {
+  let sql = `DELETE FROM ?? WHERE id = ?`
+  return query(sql, [table, id])
+}
+/**
  * 删除指定表中某一个数据
  * @param {*} table 
  * @param {*} keyValue 
  * @param {*} keyName 
  */
-const deleteDataById = (table, keyValue,  keyName = 'id') => {
+const deleteDataByOption = (table, keyValue,  keyName = 'id') => {
   let sql = `DELETE FROM ?? WHERE ${keyName} = ?`
   return query(sql, [table, keyValue])
 }
@@ -165,11 +183,13 @@ module.exports = {
   findAll,
   createTable,
   findTableDataById,
+  findDatasByName,
   findDataByName,
   insertData,
   updateData,
   updateValuesById,
   deleteDataById,
+  deleteDataByOption,
   select,
   count
 }

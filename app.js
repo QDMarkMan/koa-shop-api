@@ -22,23 +22,22 @@ onerror(app)
 app.use(ctxErrorHandle)
 // =======> 允许跨域访问中间件  <========
 app.use(CORSMiddleware())
-
+// =======> 数据解析中间件  <========
 app.use(bodyparser({
   enableTypes:['json', 'form', 'text']
 }))
 app.use(json())
 app.use(require('koa-static')(__dirname + '/public'))
-
-app.use(views(__dirname + '/views', {
+/* app.use(views(__dirname + '/views', {
   extension: 'pug'
-}))
+})) */
 // =======> session中间件初始化  <========
 initSessionStore(app)
 // =======> 日志中间件  <========
 initLoggerMiddleWare(app)
+// =======> passport中间件拦截 : 在注册路由之前进行拦截 <========
+app.use(sessionPassport)
 // =======> 路由注册中间件  <========
 app.use(router.routes(), router.allowedMethods())
-// =======> passport中间件拦截  <========
-app.use(sessionPassport)
 
 module.exports = app

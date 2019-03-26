@@ -2,6 +2,7 @@ const router = require('koa-router')()
 const userParamValidator = require('../validators/UserValidator')
 const UserService = require('../service/UserServie')
 const ReturnMessage = require('../utils/message')
+const config = require('../config')
 // 返回数据拼接处理
 const returnMessage = new ReturnMessage()
 // 服务曾
@@ -54,6 +55,19 @@ router.post('/login', async (ctx, next) => {
   // 返回结果
   ctx.body = result
   next()
+})
+// =======> 退出登陆接口  <========
+router.post('/logout', async(ctx, next) => {
+  next()
+  let result = {}
+  // 拿到用户id
+  const _sessionId = ctx.header.key
+  result = await userService.logoutByUserId(_sessionId)
+  // 清楚上下文中的session
+  if (result.success) {
+    ctx.session = null
+  }
+  ctx.body = result
 })
 
 // 获取用户信息
