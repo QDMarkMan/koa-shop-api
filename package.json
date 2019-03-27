@@ -9,6 +9,7 @@
     "sync:sql": "node sql/async"
   },
   "dependencies": {
+    "busboy": "^0.3.0",
     "confman": "^0.2.10",
     "debug": "^4.1.1",
     "ejs": "^2.6.1",
