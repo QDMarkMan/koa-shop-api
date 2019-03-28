@@ -5,7 +5,7 @@
  * @Description: 第一层的自动引入router  这里我们并没有进行单独的路由分离，你也可以把路由分为controller层和routers层次
  * @youWant: add you want info here
  * @Date: 2019-03-08 16:24:26
- * @LastEditTime: 2019-03-13 14:05:09
+ * @LastEditTime: 2019-03-28 15:51:15
  */
 const fs = require('fs')
 const path = require('path')
@@ -21,7 +21,7 @@ const isLegalRouter = (router = {}) => {
   if (JSON.stringify(router) === '{}') {
     return false
   } else {
-    return router['opts'] !== undefined && router['opts'] !== undefined &&  router['methods'] !== undefined && router['params'] !== undefined && router['stack'] !== undefined
+    return router['opts'] !== undefined && router['methods'] !== undefined && router['params'] !== undefined && router['stack'] !== undefined
   }
 }
 // ========> 过滤文件夹 <=========

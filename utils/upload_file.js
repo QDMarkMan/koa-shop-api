@@ -5,7 +5,7 @@
  * @Description: 上传文件模块
  * @youWant: add you want info here
  * @Date: 2019-03-27 16:14:08
- * @LastEditTime: 2019-03-27 17:22:50
+ * @LastEditTime: 2019-03-28 16:24:06
  */
 
 const inspect = require('util').inspect
@@ -74,7 +74,7 @@ function uploadFile (ctx, options) {
       // 文件写入事件完成
       file.on('end', () => {
         logger.console("文件上传成功")
-        result = `//${ctx.host}/images/${fileName}`
+        result = `${ctx.host}/images/${fileName}`
         resolve(result)
       })
     })

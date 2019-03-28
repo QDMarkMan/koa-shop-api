@@ -5,7 +5,7 @@
  * @Description: 初始化session模块， 使用 koa-mysql-session + koa-session-minimal
  * @youWant: add you want info here
  * @Date: 2019-03-14 14:42:49
- * @LastEditTime: 2019-03-14 14:50:50
+ * @LastEditTime: 2019-03-28 16:38:06
  */
 const config = require('../config')
 const session = require('koa-session-minimal')   // 使用于提供存储介质的读写接口
@@ -28,11 +28,13 @@ const initSessionStore = (app) => {
     maxAge: 60 * 60 * 24 * 1000,                  // cookie的过期时间 maxAge in ms (default is 1 days)
     store: new MysqlStore(SESSION_MYSQL_CONFIG),  //mysql存储session设置
     rolling: true,                                //在每次请求时强行设置cookie，这将重置cookie过期时间（默认：false） 设置fasle的时候无论多长时间操作那么就失效
-    renew: false,                                 // 请求的时候如果session快过期了 那么就重新激活 效果和上面的差不多
+    renew: true,                                  // 请求的时候如果session快过期了 那么就重新激活 效果和上面的差不多
     cookie: {
+      // domain: 'localhost',                        // 写cookie所在的域名
+      // path: '',                                   // 写cookie所在的路径
       signed: true,                               // 默认签名
       maxAge: config.sessionTimeout,              // cookie的过期时间 maxAge in ms (default is 1 days)
-      httpOnly: true,                             // 是否只用于 http 请求中获取
+      httpOnly: false,                            // 是否只用于 http 请求中获取
       overwrite: false                            // 是否允许重写
     }
   }))

@@ -32,6 +32,7 @@ router.post('/register', async (ctx, next) => {
 router.post('/login', async (ctx, next) => {
   let result
   let para = ctx.request.body
+  // ctx.set('Access-Control-Allow-Credentials', "true") 
   const _validatorObj = userParamValidator.validatorLoginData(para)
   if (!_validatorObj.isValid) {
     result = returnMessage.setErrorResult(_validatorObj.errCode, _validatorObj.errMsg, null)
@@ -41,7 +42,6 @@ router.post('/login', async (ctx, next) => {
     // 进行session处理
     if (result.success) {
       const _session = result.result
-      _session.isLogin = true
       // 设置存储
       ctx.session = _session
       // 根据session内容查询sessionId
