@@ -5,7 +5,7 @@
  * @Description: log4js 配置文件
  * @youWant: add you want info here
  * @Date: 2019-03-12 17:04:50
- * @LastEditTime: 2019-03-12 17:17:43
+ * @LastEditTime: 2019-03-29 15:33:41
  */
 const path = require('path')
 // 首先配置输出地址
@@ -42,7 +42,7 @@ module.exports = {
     }
   },
   categories: {                                                       // 定义默认类别 category 用于所有与特定类别不匹配的日志事件。 
-    default: { appenders: ['stdout', 'other'], level: 'debug' },      //appenders:采用的appender,取appenders项,level:设置级别
+    default: { appenders: ['stdout', 'other'], level: 'info' },      //appenders:采用的appender,取appenders项,level:设置级别
     error: { appenders: ['stdout', 'error'], level: 'error' },
     response: { appenders: ['stdout', 'response'], level: 'info' }
   }

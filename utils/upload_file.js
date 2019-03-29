@@ -5,12 +5,10 @@
  * @Description: 上传文件模块
  * @youWant: add you want info here
  * @Date: 2019-03-27 16:14:08
- * @LastEditTime: 2019-03-28 16:24:06
+ * @LastEditTime: 2019-03-29 15:36:47
  */
 
-const inspect = require('util').inspect
 const path = require('path')
-const os = require('os')
 const fs = require('fs')
 const Busboy = require('busboy')
 const logger = require('./logger')
@@ -63,30 +61,30 @@ function uploadFile (ctx, options) {
      * 监听上传事件
      */
     busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-      console.log(getFileName(filename))
+      logger.console("上传文件名：" +getFileName(filename))
       // 生成临时文件名称
       let fileName  = getFileName(filename) + Math.random().toString(16).substr(2) + '.' + getFileSuffixName(filename)
       let _uploadFilePath  = path.join( filePath, fileName )
-      console.log(_uploadFilePath)
+      // console.log(_uploadFilePath)
       let _saveTo = path.join(_uploadFilePath)
       // 保存文件
       file.pipe(fs.createWriteStream(_saveTo))
       // 文件写入事件完成
       file.on('end', () => {
         logger.console("文件上传成功")
-        result = `${ctx.host}/images/${fileName}`
-        resolve(result)
+        result = `http:${ctx.host}/images/${fileName}`
+        logger.console("文件存储地址" + result)
       })
     })
     // 解析结束事件
     busboy.on('finish', function( ) {
-      console.log('文件上结束')
+      logger.console("文件上结束")
       resolve(result)
     })
     // 解析错误事件
     busboy.on('error', function(err) {
-      console.log('文件上出错')
-      reject(false)
+      logger.error(err)
+      reject('')
     })
     req.pipe(busboy)
   })

@@ -1,8 +1,9 @@
 const router = require('koa-router')()
 const RegionService = require('../service/RegionService')
 const { uploadFile } = require('../utils/upload_file')
-const path = require('path')
+const { ReturnMessage } = require('../utils')
 
+const returnMessage = new ReturnMessage()
 // 返回数据拼接处理
 // 服务层
 const regionService = new RegionService()
@@ -17,13 +18,15 @@ router.post('/getRegionList', async (ctx, next) => {
   ctx.body = result
 })
 
-// =======> 上传文件  <========
+// =======> 上传文件暂存到服务器  <========
 router.post('/uploadFile', async (ctx, next) => {
+  let result = {}
   next()
   // 上传文件事件
-  result = await uploadFile( ctx, {
+  const filePath = await uploadFile( ctx, {
     fileType: 'album'
   })
+  result = returnMessage.setSuccessResult("上传图片成功", {filePath})
   ctx.body = result
 })
 

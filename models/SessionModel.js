@@ -5,13 +5,13 @@
  * @Description: user表模型
  * @youWant: add you want info here
  * @Date: 2019-03-08 17:46:29
- * @LastEditTime: 2019-03-26 14:42:43
+ * @LastEditTime: 2019-03-29 17:13:54
  */
 const tables = require('./Tables')
 const dbUtils = require('../sql')
 const logger = require('../utils/logger')
 
-module.exports = class UserModel {
+module.exports = class SessionModel {
   /**
    * 根据条件查询数据库
    * @param {*} optionName 

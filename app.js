@@ -1,6 +1,7 @@
 const Koa = require('koa')
 const app = new Koa()
-const views = require('koa-views')
+// const views = require('koa-views')
+const path = require('path')
 const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
@@ -27,7 +28,7 @@ app.use(bodyparser({
   enableTypes:['json', 'form', 'text']
 }))
 app.use(json())
-app.use(require('koa-static')(__dirname + '/public'))
+app.use(require('koa-static')(path.join(__dirname, './assets')))
 /* app.use(views(__dirname + '/views', {
   extension: 'pug'
 })) */

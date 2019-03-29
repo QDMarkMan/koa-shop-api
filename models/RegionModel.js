@@ -5,14 +5,13 @@
  * @Description: 区划模型
  * @youWant: add you want info here
  * @Date: 2019-03-26 16:08:45
- * @LastEditTime: 2019-03-26 16:59:20
+ * @LastEditTime: 2019-03-29 17:06:06
  */
 const tables = require('./Tables')
 const dbUtils = require('../sql')
 const logger = require('../utils/logger')
 
 module.exports = class RegionModel {
-
   /**
    * 通过城区code查询城区
    * @param {*} code 

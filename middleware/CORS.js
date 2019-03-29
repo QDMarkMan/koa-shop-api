@@ -5,7 +5,7 @@
  * @Description: 配置跨越中间件 (Cross-origin resource sharing)
  * @youWant: add you want info here
  * @Date: 2019-03-19 15:09:50
- * @LastEditTime: 2019-03-28 16:00:17
+ * @LastEditTime: 2019-03-29 15:44:29
  */
 const CORS = require('koa2-cors')
 const CORSMiddleware = (ctx, next) => {
@@ -18,7 +18,7 @@ const CORSMiddleware = (ctx, next) => {
         }
         return 'http://localhost:8080'; // 只允许 http://localhost:8080 这个域名的请求
     }, */
-    origin: 'http://localhost:8080',
+    origin: 'http://127.0.0.1:8080',
     // exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
     // maxAge: 5,
     credentials: true,

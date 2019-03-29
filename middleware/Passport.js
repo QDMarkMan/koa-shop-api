@@ -5,7 +5,7 @@
  * @Description: Session 令牌拦截,主要是拦截请求是存在session
  * @youWant: add you want info here
  * @Date: 2019-03-14 14:57:19
- * @LastEditTime: 2019-03-28 16:31:52
+ * @LastEditTime: 2019-03-29 15:15:46
  */
 const config =  require('../config')
 const ReturnMessage = require('../utils/message')
@@ -18,11 +18,10 @@ const returnMessage = new ReturnMessage()
 const sessionPassport = async (ctx, next) => {
   const session = ctx.session // 请求中的session
   const url = ctx.request.originalUrl // 请求url
-  // const Method = ctx.request.method  // 请求方法
-  console.log(session)
+  const Method = ctx.request.method  // 请求方法
   // get 请求处理当前的请求页面问题
   // 有session就放行
-  if (Object.keys(session).length != 0) {
+  if (Object.keys(session).length != 0 || Method == 'GET') {
     // 存在session进行放行
     await next()
   } else {
