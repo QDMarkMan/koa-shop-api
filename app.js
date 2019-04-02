@@ -7,9 +7,10 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const ctxErrorHandle = require('./middleware/Error')
 const initLoggerMiddleWare = require('./middleware/LoggerMiddle')
-const initSessionStore = require('./middleware/SessionInit')
-const sessionPassport = require('./middleware/Passport')
-const CORSMiddleware = require('./middleware/CORS')
+/* const initSessionStore = require('./middleware/SessionInit')
+const sessionPassport = require('./middleware/Passport') */
+const {CORSMiddleware,  JWTPassport} = require('./middleware')
+// const  = require('./middleware/CORS')
 // 数据路连接测试
 const {connectTest} =  require('./sql')
 connectTest()
@@ -23,21 +24,25 @@ onerror(app)
 app.use(ctxErrorHandle)
 // =======> 允许跨域访问中间件  <========
 app.use(CORSMiddleware())
+// =======> jwt  <========
+JWTPassport(app)
 // =======> 数据解析中间件  <========
 app.use(bodyparser({
   enableTypes:['json', 'form', 'text']
 }))
 app.use(json())
 app.use(require('koa-static')(path.join(__dirname, './assets')))
+// =======> jwt中间件  <========
+// initSessionStore(app)
 /* app.use(views(__dirname + '/views', {
   extension: 'pug'
 })) */
 // =======> session中间件初始化  <========
-initSessionStore(app)
+// initSessionStore(app)
 // =======> 日志中间件  <========
 initLoggerMiddleWare(app)
 // =======> passport中间件拦截 : 在注册路由之前进行拦截 <========
-app.use(sessionPassport)
+// app.use(sessionPassport)
 // =======> 路由注册中间件  <========
 app.use(router.routes(), router.allowedMethods())
 

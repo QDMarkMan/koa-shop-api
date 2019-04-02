@@ -5,7 +5,7 @@
  * @Description: 错误处理
  * @youWant: add you want info here
  * @Date: 2019-03-14 15:58:42
- * @LastEditTime: 2019-03-20 16:22:37
+ * @LastEditTime: 2019-04-02 18:04:19
  */
 const {CustomError, HttpError} = require('../error')
 const LoggerUtil = require ('../utils/logger')
@@ -37,7 +37,8 @@ const ctxErrorHandle  = (ctx, next) => {
            * throw err;
            */
           code = error.status
-          msg = error.message
+          // 未登录的情况使用使用unauthorized
+          msg = error.status == 401 ? "unauthorized": error.message
         }
         LoggerUtil.logError(ctx,error, 0)
         // 发送错误信息给前端

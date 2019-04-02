@@ -1,3 +1,4 @@
 module.exports = {
-  CORSMiddleware: require('./CORS')
+  CORSMiddleware: require('./CORS'),
+  JWTPassport: require('./JWTPassport')
 }

@@ -1,0 +1,6 @@
+#######项目名称#######
+projectName: koa-shop-api
+#######备注 ########
+remark: null
+####### JWT中的token  key: etongfuSecrect  密码：1qaz!QAZ
+sessionSecret: U2FsdGVkX19TZDVND7l5klf3v2yeVG9e8XOAu2St9tI=

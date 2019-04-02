@@ -2,7 +2,6 @@ const router = require('koa-router')()
 const userParamValidator = require('../validators/UserValidator')
 const UserService = require('../service/UserServie')
 const ReturnMessage = require('../utils/message')
-const config = require('../config')
 // 返回数据拼接处理
 const returnMessage = new ReturnMessage()
 // 服务曾
@@ -49,6 +48,34 @@ router.post('/login', async (ctx, next) => {
       // 获取sessionId之后返回给http请求
       result.result = {
         sessionId: _returnSession.success ? _returnSession.result.sessionId : ""// sessionId
+      } 
+    }
+  }
+  // 返回结果
+  ctx.body = result
+  next()
+})
+const JWT = require('jsonwebtoken')
+const key = "U2FsdGVkX19TZDVND7l5klf3v2yeVG9e8XOAu2St9tI="
+router.post('/loginByJWT', async (ctx, next) => {
+  let result
+  let para = ctx.request.body
+  // ctx.set('Access-Control-Allow-Credentials', "true") 
+  const _validatorObj = userParamValidator.validatorLoginData(para)
+  if (!_validatorObj.isValid) {
+    result = returnMessage.setErrorResult(_validatorObj.errCode, _validatorObj.errMsg, null)
+  } else {
+    // 向服务端发起登陆请求
+    result = await userService.loginByUserName(para)
+    // 进行session处理
+    if (result.success) {
+      // console.log(result);
+      const token = JWT.sign({
+        userId: result.result.id,
+        exp: Math.floor(Date.now() / 1000) + (60 * 60),
+      }, key)
+      result.result = {
+        token,// token
       }
     }
   }
@@ -69,12 +96,17 @@ router.post('/logout', async(ctx, next) => {
   }
   ctx.body = result
 })
+const util = require('util')
+const verify = util.promisify(JWT.verify) // 解密
 
 // 获取用户信息
 router.post('/getUserInfo', async (ctx, next) => {
+  const token = ctx.header.authorization  // 获取jwt
+  const payload = await verify(token, key)  // // 解密，获取payload
+  console.log(payload)
   next()
   let result = {}
-  const id = ctx.session.id
+  const id = payload.userId
   result = await userService.getUserInfoByUserId(id)
   ctx.body = result
 })
