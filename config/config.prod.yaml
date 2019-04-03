@@ -18,12 +18,15 @@ sessionSecret: secretCat
 #######Session Timeout
 sessionTimeout: 30 * 60 * 1000
 
+####### JWT中的签发密钥  key: etongfuSecrect  密码：1qaz!QAZ
+jwt_key: U2FsdGVkX19TZDVND7l5klf3v2yeVG9e8XOAu2St9tI=
+
 #######OSS配置 Start
 #OSS Key
 #OSS Secret
 #######OSS配置 End
 #########数据库配置 Start
-#DB config
+#DB config MySQL 数据库配置
 DB:
   host: 'localhost' # 这也是注释，不会输出的
   port: 3306

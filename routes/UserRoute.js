@@ -2,6 +2,9 @@ const router = require('koa-router')()
 const userParamValidator = require('../validators/UserValidator')
 const UserService = require('../service/UserServie')
 const ReturnMessage = require('../utils/message')
+const config = require('../config')
+const JWT = require('jsonwebtoken')
+const { getPaloadFromJWT } = require('../public/RoutePublic')
 // 返回数据拼接处理
 const returnMessage = new ReturnMessage()
 // 服务曾
@@ -55,12 +58,10 @@ router.post('/login', async (ctx, next) => {
   ctx.body = result
   next()
 })
-const JWT = require('jsonwebtoken')
-const key = "U2FsdGVkX19TZDVND7l5klf3v2yeVG9e8XOAu2St9tI="
+
 router.post('/loginByJWT', async (ctx, next) => {
   let result
   let para = ctx.request.body
-  // ctx.set('Access-Control-Allow-Credentials', "true") 
   const _validatorObj = userParamValidator.validatorLoginData(para)
   if (!_validatorObj.isValid) {
     result = returnMessage.setErrorResult(_validatorObj.errCode, _validatorObj.errMsg, null)
@@ -72,8 +73,8 @@ router.post('/loginByJWT', async (ctx, next) => {
       // console.log(result);
       const token = JWT.sign({
         userId: result.result.id,
-        exp: Math.floor(Date.now() / 1000) + (60 * 60),
-      }, key)
+      }, config.jwt_key,  { expiresIn: '12h' }
+      )
       result.result = {
         token,// token
       }
@@ -96,18 +97,15 @@ router.post('/logout', async(ctx, next) => {
   }
   ctx.body = result
 })
-const util = require('util')
-const verify = util.promisify(JWT.verify) // 解密
-
 // 获取用户信息
 router.post('/getUserInfo', async (ctx, next) => {
-  const token = ctx.header.authorization  // 获取jwt
-  const payload = await verify(token, key)  // // 解密，获取payload
-  console.log(payload)
   next()
+  // 获取到当前token中的payload
+  const payload = getPaloadFromJWT(ctx)
+  console.log(payload)
   let result = {}
-  const id = payload.userId
-  result = await userService.getUserInfoByUserId(id)
+  const {userId} = payload
+  result = await userService.getUserInfoByUserId(userId)
   ctx.body = result
 })
 
