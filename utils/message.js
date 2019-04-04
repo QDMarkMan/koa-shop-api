@@ -5,7 +5,7 @@
  * @Description: 返回数据工构造器
  * @youWant: add you want info here
  * @Date: 2019-03-11 17:11:53
- * @LastEditTime: 2019-03-19 13:55:58
+ * @LastEditTime: 2019-04-04 17:34:08
  */
 const {ERROR_MSG,  CONSTANTS} = require('../error/constants')
 module.exports = class ReturnMessage  {
@@ -40,6 +40,24 @@ module.exports = class ReturnMessage  {
       code,
       message,
       result,success
+    }
+  }
+  /**
+   * 设置分页返回数据
+   * @param {*} totalCount 
+   * @param {*} pageNo 
+   * @param {*} pageSize 
+   * @param {*} list 
+   */
+  setPageData (totalCount, pageNo, pageSize, list = []) {
+    let _temp = Number(totalCount) / Number(totalCount)
+    const _totalPage = _temp > 1 ? Math.floor(x) : 1
+    return {
+      totalCount,
+      pageNo: Number(pageNo),
+      pageSize: Number(pageSize),
+      totalPage: _totalPage,
+      list
     }
   }
   /**

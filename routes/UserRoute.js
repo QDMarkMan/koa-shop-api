@@ -102,7 +102,6 @@ router.post('/getUserInfo', async (ctx, next) => {
   next()
   // 获取到当前token中的payload
   const payload = getPaloadFromJWT(ctx)
-  console.log(payload)
   let result = {}
   const {userId} = payload
   result = await userService.getUserInfoByUserId(userId)
@@ -115,6 +114,18 @@ router.post('/getUsers', async (ctx, next) => {
   next()
   let result = {}
   result = await userService.getUserList()
+  ctx.body = result
+})
+
+// 分页查询用户
+router.post('/getUsersByPage', async (ctx, next) => {
+  next()
+  let result = {}
+  const {pageNo, pageSize} = ctx.request.body
+  const para = ctx.request.body
+  delete para.pageNo
+  delete para.pageSize
+  result = await userService.getUserListBypage(para, pageNo, pageSize)
   ctx.body = result
 })
 

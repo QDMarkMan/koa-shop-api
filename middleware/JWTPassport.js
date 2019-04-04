@@ -5,7 +5,7 @@
  * @Description: Jsonweb token形式的用户权限检查
  * @youWant: add you want info here
  * @Date: 2019-04-02 15:35:27
- * @LastEditTime: 2019-04-03 15:29:27
+ * @LastEditTime: 2019-04-04 16:15:13
  */
 const config =  require('../config')
 const ReturnMessage = require('../utils/message')
@@ -36,6 +36,12 @@ const sessionPassport = async (ctx, next) => {
     } 
   }
 }
+const serilizeList  = () =>{
+  let _temp = config.safe_filter_url.map(el => {
+    return el = new RegExp(el)
+  })
+  return _temp
+}
 /**
  * JWTPassport
  * @param {*} ctx 
@@ -45,7 +51,7 @@ const JWTPassport = async (app) => {
   app.use(koajwt({
     secret: config.jwt_key,
   }).unless({
-    path: [new RegExp('/api/user/loginByJWT')]
+    path: serilizeList()
   }))
 }
 module.exports = JWTPassport

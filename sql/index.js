@@ -5,7 +5,7 @@
  * @Description: 数据库链接/帮助 文件
  * @youWant: add you want info here
  * @Date: 2019-03-11 14:48:06
- * @LastEditTime: 2019-03-26 16:59:10
+ * @LastEditTime: 2019-04-04 17:25:44
  */
 const MySQL = require('mysql')
 const chalk = require('chalk')
@@ -141,6 +141,17 @@ const updateValuesById = (table, values, id) => {
   return query(sql, [table, id])
 }
 /**
+ * 通过制定的Key进行更新
+ * @param {*} table 
+ * @param {*} values 
+ * @param {*} optionName 
+ * @param {*} optionValue 
+ */
+const updateValuesByOption = (table, values, optionName, optionValue) => {
+  let sql = `UPDATE ?? SET ${values} WHERE ${optionName} = ?`
+  return query(sql, [table, optionValue])
+}
+/**
  * 根据id删除指定表中某一个数据
  * @param {*} table 
  * @param {*} id 
@@ -169,6 +180,19 @@ const select = (table, keys) => {
   return query(sql, [keys, table])
 }
 /**
+ * 简单分页条件查询
+ * @param {*} table 表
+ * @param {*} param 条件
+ * @param {*} pageNo 页码 
+ * @param {*} pageSize 页长
+ */
+const selectByPage = (table, param , pageNo, pageSize) => {
+  let startIndex = (pageNo - 1) * pageSize;
+  let sql = `SELECT * FROM ?? ${param == '' ? '' :'WHERE ' + param }  LIMIT ${startIndex}, ${pageSize};`
+  console.log(sql);
+  return query(sql, [table])
+}
+/**
  * 统计表数据
  * @param {*} table 
  */
@@ -188,8 +212,10 @@ module.exports = {
   insertData,
   updateData,
   updateValuesById,
+  updateValuesByOption,
   deleteDataById,
   deleteDataByOption,
   select,
+  selectByPage,
   count
 }

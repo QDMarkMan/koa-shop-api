@@ -5,7 +5,7 @@
  * @Description: 用户数据service层
  * @youWant: add you want info here
  * @Date: 2019-03-11 14:29:06
- * @LastEditTime: 2019-03-26 14:49:05
+ * @LastEditTime: 2019-04-04 17:28:02
  */
 const UserModel = require('../models/UserModel')
 const UuidService = require('./UuidService')
@@ -58,9 +58,9 @@ module.exports = class UserService extends CommonService {
         }
         // =======> 新增用户  <========
         // 创建id
-        const id = await uuidService.generateUuId()
+        const userId = await uuidService.generateUuId()
         // 参数处理
-        userEntity.id = id // 加上id
+        userEntity.userId = userId // 加上id
         userEntity.gender = userEntity.gender === '' ? '0' : '1' // 默认为男性
         userEntity.regDate = new Date().getTime() // 加上创建时间
         userEntity.password = SecretService.generatePassportKey(userEntity.password)
@@ -163,6 +163,34 @@ module.exports = class UserService extends CommonService {
         return {id, username, nickName, email, phone, ip, address, gender}
       })
       result = returnMessage.setSuccessResult("获取用户列表成功", _temp)
+    } catch (error) {
+      logger.error(`ServiceError: error in UserService getUserList, ${error}`)
+      result =  returnMessage.set500Result()
+    }
+    return result
+  }
+  /**
+   * 分页获取用户
+   * @requires all users
+   */
+  async getUserListBypage (param, pageNo, pageSize) {
+    let result
+    try {
+      logger.console("分页获取获取用户数据")
+      // issue: 进行逻辑删除的判断
+      let _res = await userModel.getUsersByPageAndOptions(param, pageNo, pageSize)
+      let _count = await userModel.getUserCount()
+      if(_res == null || _res.length === 0) {
+        return result = returnMessage.setErrorResult(returnMessage.CONSTANTS.CUSTOM_CODE.EMPTY_RESULT, "查询无数据", null)
+      }
+      //拾取数组
+      const _temp = _res.map(el => {
+        let {id, username, nickName, email, phone, ip, address, gender} = undelineToCamel(el)
+        return {id, username, nickName, email, phone, ip, address, gender}
+      })
+      const _totalCount = _count === null ? 0 : undelineToCamel(_count[0]).totalCount
+      const _result = returnMessage.setPageData(_totalCount, pageNo, pageSize, _temp)
+      result = returnMessage.setSuccessResult("获取用户列表成功", _result)
     } catch (error) {
       logger.error(`ServiceError: error in UserService getUserList, ${error}`)
       result =  returnMessage.set500Result()

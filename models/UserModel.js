@@ -5,7 +5,7 @@
  * @Description: user表模型
  * @youWant: add you want info here
  * @Date: 2019-03-08 17:46:29
- * @LastEditTime: 2019-03-20 15:35:24
+ * @LastEditTime: 2019-04-04 17:24:00
  */
 const dbUtils = require('../sql')
 const Util = require('../utils/util')
@@ -65,10 +65,40 @@ module.exports = class UserModel {
     let result
     try {
       const _values = Util.changeObjToSqlStr(info)
-      result = await dbUtils.updateValuesById(tables.USERS_TABLE, _values, id)
+      result = await dbUtils.updateValuesByOption(tables.USERS_TABLE, _values, 'user_id',id)
     } catch (error) {
       logger.error(error)
       result = null
+    }
+    return result
+  }
+  /**
+   * 根据条件分页查询用户
+   * @param {*Object} options 查询条件{}
+   * @param {*String/Number} pageNo 
+   * @param {*String/Number} pageSize 
+   */
+  async getUsersByPageAndOptions (options,pageNo = 1, pageSize = 5) {
+    let result
+    try {
+      const _options = Util.changeObjToSqlStr(options)
+      result = await dbUtils.selectByPage(tables.USERS_TABLE, _options, Number(pageNo), Number(pageSize))
+    } catch (error) {
+      logger.error(error)
+      result = null
+    }
+    return result
+  }
+  /**
+   * 获取总共用户数量
+   */
+  async getUserCount () {
+    let result
+    try {
+      result = await dbUtils.count(tables.USERS_TABLE)
+    } catch (error) {
+      logger.error(error)
+      result = 0
     }
     return result
   }

@@ -52,5 +52,5 @@ DB:
 safe_path: "urlPath"
 safe_body: "urlBody"
 #######请求白名单（配置的URL不进行加密和解密）支持*，如：/ABCD/*
-safe_filter_url: ['/api/user/login', '/reg', '/api/common/uploadFile']
+safe_filter_url: ['/api/user/login', '/api/user/loginByJWT', '/api/user/register', '/api/common/uploadFile']
 #######安全模块配置 End
