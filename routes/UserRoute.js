@@ -75,6 +75,7 @@ router.post('/loginByJWT', async (ctx, next) => {
         userId: result.result.id,
       }, config.jwt_key,  { expiresIn: '12h' }
       )
+      // 生成返回token
       result.result = {
         token,// token
       }

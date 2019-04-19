@@ -32,8 +32,6 @@ app.use(bodyparser({
 }))
 app.use(json())
 app.use(require('koa-static')(path.join(__dirname, './assets')))
-// =======> jwt中间件  <========
-// initSessionStore(app)
 /* app.use(views(__dirname + '/views', {
   extension: 'pug'
 })) */
