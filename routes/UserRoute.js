@@ -34,6 +34,8 @@ router.post('/register', async (ctx, next) => {
 router.post('/login', async (ctx, next) => {
   let result
   let para = ctx.request.body
+  console.log(ctx.request);
+  console.log(para)
   // ctx.set('Access-Control-Allow-Credentials', "true") 
   const _validatorObj = userParamValidator.validatorLoginData(para)
   if (!_validatorObj.isValid) {
